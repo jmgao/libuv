@@ -59,7 +59,10 @@
 # include <AvailabilityMacros.h>
 #endif
 
-#if defined(__ANDROID__)
+// pthread_sigmask was broken before Android Jellybean.
+// See: https://issuetracker.google.com/issues/36926392
+//      https://android.googlesource.com/platform/bionic/+/9bf330b5
+#if defined(__ANDROID__) && __ANDROID_API__ < 16
 int uv__pthread_sigmask(int how, const sigset_t* set, sigset_t* oset);
 # ifdef pthread_sigmask
 # undef pthread_sigmask
